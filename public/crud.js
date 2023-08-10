@@ -29,10 +29,12 @@ window.getAllPost = (event) => {
 
             let postsHtml = ``
             response.data.map((eachPost) => {
-                postsHtml += 
-                `<div class="post-card">
+                postsHtml +=
+                    `<div class="post-card">
                     <h3> ${eachPost.title} </h3> 
                     <p> ${eachPost.text} </p>
+                    <button onclick="delPost('${eachPost.id}')"> Delete </button>
+                    <button> Edit </button>
                 </div> 
                 <br>`
             })
@@ -44,4 +46,21 @@ window.getAllPost = (event) => {
             console.log(error.data);
             document.getElementById("result").innerHTML = "error in post"
         })
+
+    window.delPost = (postId) => {
+
+        console.log("delete :", postId)
+
+        axios.delete(`/api/v1/post/${postId}`)
+            .then(function (response) {
+                console.log(response.data);
+
+                getAllPost();
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error.data);
+                document.getElementById("result").innerHTML = "error in post"
+            })
+    } 
 }

@@ -27,7 +27,7 @@ router.post('/post', (req, res, next) => {
         return
     }
 
-    posts.push({
+    posts.unshift({
         id: nanoid(),
         title: req.body.title,
         text: req.body.text
@@ -42,18 +42,18 @@ router.get('/posts', (req, res, next) => {
 })
 
 router.get('/post/:postId', (req, res, next) => {
-    
-    if (isNaN(req.params.postId)) {
-        res.status(403).send(`post id is must be always numeric, alphnumeric and alphabets are not allowed`)
+
+    if (!req.params.postId) {
+        res.status(403).send(`post id is must be valid id `)
     }
-    
+
     for (let i = 0; i < posts.length; i++) {
         if (posts[i].id === Number(req.params.postId)) {
             res.send(posts[i])
             return
         }
     }
-    
+
     res.send("post not found with id " + req.params.postId + ' ' + new Date())
     console.log(`you get a post with this ${req.params.postId}`, + new Date())
 })
@@ -67,9 +67,9 @@ router.get('/posts/ ', (req, res, next) => {
 router.put('/post/:postId', (req, res, next) => {
     console.log("your post is SUCCESFULLY updated", + new Date())
 
-    for (let i = 0; i < posts.length; i++){
+    for (let i = 0; i < posts.length; i++) {
 
-        if(Number(req.params.postId) ===  posts[i].id){
+        if (Number(req.params.postId) === posts[i].id) {
 
             if (!req.body.title || !req.body.text) {
                 res.status(403)
@@ -82,10 +82,10 @@ router.put('/post/:postId', (req, res, next) => {
                 )
                 return
             }
-        
+
             posts[i].title = req.body.title;
             posts[i].text = req.body.text;
-        
+
         }
     }
     res.send("your post is SUCCESFULLY updated" + new Date())
@@ -94,14 +94,20 @@ router.put('/post/:postId', (req, res, next) => {
 router.delete('/post/:postId', (req, res, next) => {
     console.log("your post is deleted", + new Date())
 
-    for(let i=0;i<posts.length;i++){
-        if(posts[i].id === Number(req.params.postId)){
-            posts.splice(posts[i])
+    if (!req.params.postId) {
+        res.status(403).send(`post id must be a valid id`)
+    }
+
+    for (let i = 0; i < posts.length; i++) {
+        if (posts[i].id === req.params.postId) {
+            posts.splice(i, 1)
+            res.send('post deleted with id ' + req.params.postId + new Date());
+            return;
         }
     }
 
-    res.send("your post is deleted" + new Date())
-    
+    res.send('post not found with id ' + req.params.postId);
+
 })
 
 export default router
