@@ -1,7 +1,7 @@
 import express from 'express';
 import { nanoid } from 'nanoid'
 
-let router = express.Router()
+let  router = express.Router()
 
 //not recommemnded only for practice
 let posts = [
@@ -64,24 +64,23 @@ router.get('/posts/ ', (req, res, next) => {
 })
 
 
+
 router.put('/post/:postId', (req, res, next) => {
-    console.log("your post is SUCCESFULLY updated", + new Date())
+    // console.log("your post is SUCCESFULLY updated", + new Date())
+
+    if (!req.body.postId || !req.body.title || !req.body.text) {
+        res.status(403)
+        res.send(`required parameter is missing,
+                        example request body:
+                        {
+                            title: "Muhammad! muhammad Khubaib naam hai mera! ",
+                            text: "jo dil kre likho"
+                        }`
+        )
+    }
 
     for (let i = 0; i < posts.length; i++) {
-
-        if (Number(req.params.postId) === posts[i].id) {
-
-            if (!req.body.title || !req.body.text) {
-                res.status(403)
-                res.send(`required parameter is missing,
-                example request body:
-                {
-                    title: "Muhammad! muhammad Khubaib naam hai mera! ",
-                    text: "jo dil kre likho"
-                }`
-                )
-                return
-            }
+        if ((req.params.postId) === posts[i].id) {
 
             posts[i].title = req.body.title;
             posts[i].text = req.body.text;

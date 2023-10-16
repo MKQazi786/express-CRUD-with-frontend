@@ -46,8 +46,9 @@ window.getAllPost = (event) => {
             console.log(error.data);
             document.getElementById("result").innerHTML = "error in post"
         })
+}
 
-    window.delPost = (postId) => {
+window.delPost = (postId) => {
 
         console.log("delete :", postId)
 
@@ -62,9 +63,9 @@ window.getAllPost = (event) => {
                 console.log(error.data);
                 document.getElementById("result").innerHTML = "error in post"
             })
-    }
+}
 
-    window.editPost = (postId, title, text) => {
+window.editPost = (postId, title, text) => {
         console.log("PostId :", postId)
 
         document.getElementById(`card-${postId}`).innerHTML += 
@@ -74,12 +75,13 @@ window.getAllPost = (event) => {
           <br/>
           text: <input type="text" value="${text}" id="text-${postId}" />
           <br/>
-          <button onclick="savePost('${postId}')" >Save</button>
+          <button>Save</button>
         </form>`
 
-    }
+}
 
-    window.savePost = (postId) => {
+window.savePost = (postId) => {
+
         const updatedTitle = document.getElementById(`title-${postId}`).value
         const updatedText = document.getElementById(`text-${postId}`).value
 
@@ -89,12 +91,10 @@ window.getAllPost = (event) => {
         })
             .then(function (response) {
                 console.log(response.data);
-                getAllPost()
             })
             .catch(function (error) {
                 // handle error
-                console.log(error.data);
+                console.log(error);
                 document.getElementById("result").innerHTML = "error in post"
             })
-}
 }
